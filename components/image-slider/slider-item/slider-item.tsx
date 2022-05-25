@@ -18,11 +18,6 @@ const SliderItem = (props: IProps) => {
         width: "100%",
         borderRadius: 10,
         alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: { width: 0.5, height: 0.5 },
-        shadowOpacity: 0.5,
-        shadowRadius: 3,
-        elevation: 5,
         paddingHorizontal: 10,
       }}
     >
@@ -31,6 +26,9 @@ const SliderItem = (props: IProps) => {
           width: width - 40,
           height: 200,
           borderRadius: 10,
+          resizeMode: 'cover',
+          borderWidth: 1,
+          borderColor: '#56bea8'
         }}
         source={{ uri: props.imageURL }}
         key={props.imageURL}

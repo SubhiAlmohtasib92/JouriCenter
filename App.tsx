@@ -7,6 +7,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import HomeScreen from './Screens/Home/home-screen';
 
 import { useFonts } from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 
 
 function SettingsScreen() {
@@ -32,9 +33,9 @@ export default function App() {
     return <View><Text>Loading...</Text></View>
   }
 
-
   return (
-    <SafeAreaProvider style={{ margin: 2,backgroundColor:'#fff' }}>
+    <SafeAreaProvider style={{ margin: 2, backgroundColor: '#fff' }}>
+      <StatusBar hidden={false} />
       <NavigationContainer>
         <Tab.Navigator
           initialRouteName='Home'
