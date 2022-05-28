@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 
-import { Header, Categories } from '../../components/home';
+import { Header, Categories, ImagesGrid } from '../../components/home';
 import CarouselCards from '../../components/home/carousel/CarouselCards';
 
 import { Colors } from '../../theme';
@@ -27,6 +27,7 @@ const HomeScreen = () => {
         >
           <CarouselCards />
           <Categories />
+          <ImagesGrid />
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -39,6 +40,8 @@ const styles = StyleSheet.create({
   homeScreenWrapper: {
     flex: 1,
     backgroundColor: Colors.primaryColor,
+    marginBottom: 50,
+    height: '100%',
   },
   scrollView: {
     borderTopLeftRadius: 40,
