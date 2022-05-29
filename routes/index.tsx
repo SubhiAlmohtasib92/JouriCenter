@@ -4,11 +4,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 
 import { Colors } from '../theme';
-import HomeScreen from '../screens/home';
+import { HomeScreen, CategoriesScreen } from '../screens';
+import store from '../state';
+//import categoryProducts from '../screens/category-products';
 
 const Tab = createBottomTabNavigator();
+const CategoriesStack = createNativeStackNavigator();
 
 function SettingsScreen() {
   return (
@@ -20,6 +25,17 @@ function SettingsScreen() {
       </View>
     </SafeAreaView>
   );
+}
+
+const CategoriesStackScreen = () => {
+  return (
+    <CategoriesStack.Navigator screenOptions={{
+      headerShown: false
+    }}>
+      <CategoriesStack.Screen name="Categories" component={CategoriesScreen} />
+      <CategoriesStack.Screen name="CategoryDetails" component={SettingsScreen} />
+    </CategoriesStack.Navigator>
+  )
 }
 
 const Routes = () => {
@@ -40,7 +56,6 @@ const Routes = () => {
           name='MyProfile'
           component={SettingsScreen}
           options={{
-            tabBarBadge: 2,
             tabBarLabel: 'صفحتي',
             tabBarIcon: ({ focused }) => {
               return (
@@ -57,7 +72,7 @@ const Routes = () => {
           name='WhishList'
           component={SettingsScreen}
           options={{
-            tabBarBadge: 2,
+            ...(store.getState().core.whishList.length > 0 && { tabBarBadge: store.getState().core.whishList.length }),
             tabBarLabel: 'قائمة الامنيات',
             tabBarIcon: ({ focused }) => {
               return (
@@ -74,7 +89,7 @@ const Routes = () => {
           name='ShoppingCart'
           component={SettingsScreen}
           options={{
-            tabBarBadge: 2,
+            ...(store.getState().core.cart.length > 0 && { tabBarBadge: store.getState().core.cart.length }),
             tabBarLabel: 'عربة التسوق',
             tabBarIcon: ({ focused }) => {
               return (
@@ -90,9 +105,10 @@ const Routes = () => {
         />
         <Tab.Screen
           name='Categories'
-          component={SettingsScreen}
+          component={CategoriesStackScreen}
           options={{
             tabBarLabel: 'الفئات',
+            headerShown: false,
             tabBarIcon: ({ focused }) => {
               return (
                 <Ionicons
@@ -120,6 +136,7 @@ const Routes = () => {
             },
           }}
         />
+
       </Tab.Navigator>
     </NavigationContainer>
   );

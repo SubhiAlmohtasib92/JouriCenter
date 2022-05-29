@@ -10,11 +10,11 @@ import Routes from './routes';
 import { Colors } from './theme';
 
 import { StatusBar } from 'expo-status-bar';
-import CarouselCards from './components/home/carousel/CarouselCards';
 
-export default function App() {
+const App = () => {
+
   let [fontsLoaded] = useFonts({
-    regular: require('./assets/fonts/Lemonada-Regular.ttf'),
+    regular: require('./assets/fonts/NotoKufiArabic-Regular.ttf'),
     bold: require('./assets/fonts/Lemonada-Bold.ttf'),
   });
 
@@ -42,3 +42,5 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryColor,
   },
 });
+
+export default App;

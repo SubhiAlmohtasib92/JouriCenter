@@ -2,26 +2,29 @@ import { Text, View, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors } from '../../../theme';
 
-const Header = () => {
+interface IProps {
+  title: string;
+}
+const Header = (props: IProps) => {
   return (
     <View style={styles.container}>
       <Ionicons
         name={'search-outline'}
-        size={35}
+        size={30}
         color={Colors.lightGreyColor}
       />
       <Text
         style={{
           fontFamily: 'regular',
           color: Colors.lightGreyColor,
-          fontSize: 24,
+          fontSize: 20,
         }}
       >
-        جوري سنتر
+        {props.title}
       </Text>
       <Ionicons
         name={'notifications-outline'}
-        size={35}
+        size={30}
         color={Colors.lightGreyColor}
       />
     </View>
@@ -36,7 +39,9 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
+    alignItems: 'center',
     paddingBottom: 5,
+    paddingTop: 3,
     backgroundColor: Colors.primaryColor,
   },
 });

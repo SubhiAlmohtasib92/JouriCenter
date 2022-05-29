@@ -4,5 +4,8 @@
     "prettier.singleQuote": true,
     "javascript.preferences.quoteStyle": "single",
     "typescript.preferences.quoteStyle": "single",
-    "html.completion.attributeDefaultValue": "singlequotes"
+    "html.completion.attributeDefaultValue": "singlequotes",
+    "cSpell.words": [
+        "Pressable"
+    ]
 }

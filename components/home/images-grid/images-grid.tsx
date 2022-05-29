@@ -53,7 +53,7 @@ const ImagesGrid = () => {
           <Ionicons
             name={'chevron-back-sharp'}
             size={20}
-            color={Colors.greyColor}
+            color={Colors.blackColor}
             style={{
               alignItems: 'center',
               justifyContent: 'center',
@@ -87,7 +87,8 @@ const styles = StyleSheet.create({
   headerText: {
     fontFamily: 'regular',
     fontSize: 15,
-    color: Colors.greyColor,
+    color: Colors.primaryColor,
+    padding: 15
   },
   itemsContainer: {
     flexWrap: 'wrap',

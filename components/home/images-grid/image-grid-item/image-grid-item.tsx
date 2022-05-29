@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Colors } from '../../../../theme';
+import { LikeButton } from '../../../common';
 
 interface IProps {
   data: ImageGridItemInterface;
@@ -15,6 +16,8 @@ interface IProps {
 }
 
 const ImageGridItem = (props: IProps) => {
+
+
   const RenderPrice = () => {
     if (props.data.discount > 0) {
       return (
@@ -50,6 +53,11 @@ const ImageGridItem = (props: IProps) => {
     <TouchableOpacity style={styles.container}>
       <Image source={{ uri: props.data.imgUrl }} style={styles.image} />
       <Text style={styles.title}>{props.data.title}</Text>
+      <View style={{
+        position: 'absolute',
+        top: 5,
+        right: 5,
+      }}><LikeButton /></View>
       <View style={styles.subInfo}>
         {RenderPrice()}
         <Text
@@ -60,8 +68,8 @@ const ImageGridItem = (props: IProps) => {
                 props.data.status === 'مباع'
                   ? 'red'
                   : props.data.status === 'متاح في المخزن'
-                  ? Colors.primaryColor
-                  : '#ff6f00',
+                    ? Colors.primaryColor
+                    : '#ff6f00',
             },
           ]}
         >
@@ -118,9 +126,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     position: 'absolute',
     top: 0,
-    overflow:'hidden',
+    overflow: 'hidden',
     left: 0,
-    backgroundColor: 'red',
+    backgroundColor: Colors.primaryColor,
     borderBottomRightRadius: 15,
     borderTopLeftRadius: 15,
     padding: 5,

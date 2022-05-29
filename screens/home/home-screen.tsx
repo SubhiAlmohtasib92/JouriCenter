@@ -1,32 +1,39 @@
+import { useEffect, useLayoutEffect } from 'react';
 import {
   View,
   Text,
   SafeAreaView,
   StyleSheet,
-  Image,
   ScrollView,
-  FlatList,
-  StatusBar,
-  Dimensions,
 } from 'react-native';
 
 import { Header, Categories, ImagesGrid } from '../../components/home';
 import CarouselCards from '../../components/home/carousel/CarouselCards';
 
 import { Colors } from '../../theme';
+import { connect } from 'react-redux';
+import { mapDispatchToProps, mapStateToProps } from './home.redux';
+import { HomeProps } from './home.types';
 
-const HomeScreen = () => {
+
+const HomeScreen = (props: HomeProps) => {
+  useEffect(() => {
+    props.doLoadCategories();
+  }, [])
+  console.log(props.core.loading);
+  console.log('my final car', props.home.carouselImages);
   return (
     <SafeAreaView style={styles.homeScreenWrapper}>
       <View>
-        <Header />
+        <Header title='جوري سنتر' />
         <ScrollView
           horizontal={false}
           alwaysBounceVertical={false}
           style={styles.scrollView}
+          showsVerticalScrollIndicator={false}
         >
-          <CarouselCards />
-          <Categories />
+          <CarouselCards data={props.home.carouselImages} />
+          <Categories categories={props.core.categoriesList} navigation={props.navigation} />
           <ImagesGrid />
         </ScrollView>
       </View>
@@ -34,7 +41,6 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
 
 const styles = StyleSheet.create({
   homeScreenWrapper: {
@@ -44,8 +50,12 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   scrollView: {
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     backgroundColor: Colors.whiteColor,
   },
 });
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

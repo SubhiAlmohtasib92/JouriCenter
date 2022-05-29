@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
 import { Colors } from '../../../theme';
 
-export const SLIDER_WIDTH = Dimensions.get('window').width + 120;
+export const SLIDER_WIDTH = Dimensions.get('window').width + 140;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 
 const CarouselCardItem = ({ item, index }) => {
@@ -16,7 +16,7 @@ const CarouselCardItem = ({ item, index }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    borderRadius: 40,
+    borderRadius: 10,
     borderColor: Colors.primaryColor,
     width: ITEM_WIDTH,
     height: 250,
@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
     borderColor: Colors.primaryColor,
     borderWidth: 1,
     height: '100%',
-    borderRadius: 40,
+    borderRadius: 10,
+    resizeMode: 'stretch'
   },
 });
 
