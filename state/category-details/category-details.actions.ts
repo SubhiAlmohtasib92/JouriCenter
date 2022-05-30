@@ -3,53 +3,53 @@ import { IProduct } from '../core/core.types';
 
 var base64 = require('base-64'); // install it before use from npm i base-64
 
-export enum EProductDetailsActionTypes {
-  SET_LOAD_PRODUCT_BY_PRODUCT_ID = ' [CATEGORY_DETAILS] SET_LOAD_PRODUCT_BY_PRODUCT_ID',
-  SET_LOAD_PRODUCT_BY_PRODUCT_ID_LOADING = '[CATEGORY_DETAILS] SET_LOAD_PRODUCT_BY_PRODUCT_ID_LOADING',
+export enum ECategoryDetailsActionTypes {
+  SET_LOAD_PRODUCTS_BY_CATEGORY_ID = ' [CATEGORY_DETAILS] SET_LOAD_PRODUCTS_BY_CATEGORY_ID',
+  SET_LOAD_PRODUCTS_BY_CATEGORY_ID_LOADING = '[CATEGORY_DETAILS] SET_LOAD_PRODUCTS_BY_CATEGORY_ID_LOADING',
 }
 
-interface ISetLoadProductByProductId {
-  type: EProductDetailsActionTypes.SET_LOAD_PRODUCT_BY_PRODUCT_ID;
-  payload: IProduct;
+interface ISetLoadProductsByCategoryID {
+  type: ECategoryDetailsActionTypes.SET_LOAD_PRODUCTS_BY_CATEGORY_ID;
+  payload: IProduct[];
 }
 
-interface ISetLoadProductByProductIdLoading {
-  type: EProductDetailsActionTypes.SET_LOAD_PRODUCT_BY_PRODUCT_ID_LOADING;
+interface ISetLoadProductsByCategoryIDLoading {
+  type: ECategoryDetailsActionTypes.SET_LOAD_PRODUCTS_BY_CATEGORY_ID_LOADING;
   payload: boolean;
 }
 
-export type ProductDetailsActions =
-  | ISetLoadProductByProductId
-  | ISetLoadProductByProductIdLoading;
+export type CategoryDetailsActions =
+  | ISetLoadProductsByCategoryID
+  | ISetLoadProductsByCategoryIDLoading;
 
 // Utility Area
-const setLoading = (payload: boolean): ISetLoadProductByProductIdLoading => {
+const setLoading = (payload: boolean): ISetLoadProductsByCategoryIDLoading => {
   return {
-    type: EProductDetailsActionTypes.SET_LOAD_PRODUCT_BY_PRODUCT_ID_LOADING,
+    type: ECategoryDetailsActionTypes.SET_LOAD_PRODUCTS_BY_CATEGORY_ID_LOADING,
     payload: payload,
   };
 };
 
-export const setProduct = (
-  productInfo: IProduct
-): ISetLoadProductByProductId => {
+export const setProducts = (
+  productList: IProduct[]
+): ISetLoadProductsByCategoryID => {
   return {
-    type: EProductDetailsActionTypes.SET_LOAD_PRODUCT_BY_PRODUCT_ID,
-    payload: productInfo,
+    type: ECategoryDetailsActionTypes.SET_LOAD_PRODUCTS_BY_CATEGORY_ID,
+    payload: productList,
   };
 };
 
-const getProductDetailsByProductId = (productId: number) => {
+const getProductsByCategoryId = (categoryId: number) => {
   return async (dispatch) => {
     dispatch(setLoading(true));
     try {
-      // console.log('inside', categoryId);
+      console.log('inside', categoryId);
       const username = WooCommerceInformation.username;
       const password = WooCommerceInformation.password;
       var credentials = base64.encode(username + ':' + password);
 
       const productsList: IProduct[] = await fetch(
-        `${WooCommerceInformation.websiteURL}wp-json/wc/v3/products?include=${productId}`,
+        `${WooCommerceInformation.websiteURL}wp-json/wc/v3/products?category=${categoryId}`,
         {
           method: 'GET',
           headers: { Authorization: `Basic ${credentials}` },
@@ -86,8 +86,8 @@ const getProductDetailsByProductId = (productId: number) => {
         }
       });
 
-      await dispatch(setProduct(productsList[0]));
-      return productsList || undefined;
+      await dispatch(setProducts(productsList));
+      return productsList || [];
     } catch (error) {
       console.error(error);
     } finally {
@@ -97,5 +97,5 @@ const getProductDetailsByProductId = (productId: number) => {
 };
 
 export default {
-  getProductDetailsByProductId,
+  getProductsByCategoryId,
 };

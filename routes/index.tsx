@@ -13,6 +13,7 @@ import categoryDetails from '../screens/category-details/category-details';
 import { mapDispatchToProps, mapStateToProps } from './routes.reducer';
 import { connect } from 'react-redux';
 import { RoutesProps } from './routes.types';
+import productDetails from '../screens/product-details/product-details';
 
 const Tab = createBottomTabNavigator();
 const CategoriesStack = createNativeStackNavigator();
@@ -35,13 +36,20 @@ const CategoriesStackScreen = () => {
     <CategoriesStack.Navigator
       screenOptions={{
         headerShown: false,
-
-      }}  >
-      <CategoriesStack.Screen name="Categories" component={CategoriesScreen} />
-      <CategoriesStack.Screen name="CategoryDetails" component={categoryDetails} />
+      }}
+    >
+      <CategoriesStack.Screen name='Categories' component={CategoriesScreen} />
+      <CategoriesStack.Screen
+        name='CategoryDetails'
+        component={categoryDetails}
+      />
+      <CategoriesStack.Screen
+        name='ProductDetails'
+        component={productDetails}
+      />
     </CategoriesStack.Navigator>
-  )
-}
+  );
+};
 
 const HomeStackScreen = () => {
   return (
@@ -49,16 +57,20 @@ const HomeStackScreen = () => {
       initialRouteName='Home'
       screenOptions={{
         headerShown: false,
-      }}>
-      <HomeStack.Screen name="Home" component={HomeScreen} />
-      <HomeStack.Screen name="CategoryDetails" component={categoryDetails} />
+      }}
+    >
+      <HomeStack.Screen name='Home' component={HomeScreen} />
+      <HomeStack.Screen name='CategoryDetails' component={categoryDetails} />
+      <CategoriesStack.Screen
+        name='ProductDetails'
+        component={productDetails}
+      />
     </HomeStack.Navigator>
-  )
-}
-
+  );
+};
 
 const Routes = (props: RoutesProps) => {
-  console.log('from routes,', store.getState().core.wishList);
+  //console.log('from routes,', store.getState().core.wishList);
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -92,7 +104,9 @@ const Routes = (props: RoutesProps) => {
           name='WishList'
           component={SettingsScreen}
           options={{
-            ...(store.getState().core.wishList.length > 0 && { tabBarBadge: store.getState().core.wishList.length }),
+            ...(store.getState().core.wishList.length > 0 && {
+              tabBarBadge: store.getState().core.wishList.length,
+            }),
             tabBarLabel: 'قائمة الامنيات',
             tabBarIcon: ({ focused }) => {
               return (
@@ -109,7 +123,9 @@ const Routes = (props: RoutesProps) => {
           name='ShoppingCart'
           component={SettingsScreen}
           options={{
-            ...(store.getState().core.cart.length > 0 && { tabBarBadge: store.getState().core.cart.length }),
+            ...(store.getState().core.cart.length > 0 && {
+              tabBarBadge: store.getState().core.cart.length,
+            }),
             tabBarLabel: 'عربة التسوق',
             tabBarIcon: ({ focused }) => {
               return (
@@ -144,7 +160,6 @@ const Routes = (props: RoutesProps) => {
           name='Home'
           component={HomeStackScreen}
           options={{
-
             tabBarLabel: 'الرئيسية',
             tabBarIcon: ({ focused }) => {
               return (
@@ -157,7 +172,6 @@ const Routes = (props: RoutesProps) => {
             },
           }}
         />
-
       </Tab.Navigator>
     </NavigationContainer>
   );

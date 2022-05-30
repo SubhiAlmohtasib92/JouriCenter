@@ -1,5 +1,5 @@
 import { RootState } from '../../state';
-import productDetailsActions from '../../state/product-details/product-details.actions';
+import productDetailsActions from '../../state/category-details/category-details.actions';
 
 import { IDispatchProps, IStateProps } from './category-details.types';
 

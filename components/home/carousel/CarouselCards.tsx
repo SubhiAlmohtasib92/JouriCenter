@@ -11,7 +11,7 @@ interface IProps {
 const CarouselCards = (props: IProps) => {
   const [index, setIndex] = React.useState(0);
   const isCarousel = React.useRef(null);
-  console.log('carousel items', props.data);
+  //console.log('carousel items', props.data);
   return (
     <View
       style={{

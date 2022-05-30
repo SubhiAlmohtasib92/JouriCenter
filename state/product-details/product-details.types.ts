@@ -1,6 +1,6 @@
 import { IProduct } from '../core/core.types';
 
-export interface ICategoryDetailsState {
-  products: IProduct[];
+export interface IProductDetailsState {
+  productDetails: IProduct;
   loading: boolean;
 }

@@ -1,6 +1,6 @@
 import { ICoreState, IProductCategory } from '../../state/core/core.types';
 import { IHomeState } from '../../state/home/home.types';
-import { ICategoryDetailsState } from '../../state/product-details/product-details.types';
+import { ICategoryDetailsState } from '../../state/category-details/category-details.types';
 
 export interface IDispatchProps {
   doLoadProductsByCategoryId: (categoryId: number) => (dispatch: any) => Promise<IProductCategory[] | undefined>

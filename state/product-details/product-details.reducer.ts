@@ -1,26 +1,32 @@
-import { ECategoryDetailsActionTypes, CategoryDetailsActions } from './product-details.actions';
-import { ICategoryDetailsState } from './product-details.types';
+import {
+  EProductDetailsActionTypes,
+  ProductDetailsActions,
+} from './product-details.actions';
+import { IProductDetailsState } from './product-details.types';
 
-const initialState: ICategoryDetailsState = {
-  products: [],
-  loading: true
+const initialState: IProductDetailsState = {
+  productDetails: undefined,
+  loading: true,
 };
 
-const categoryDetailsReducer = (state: ICategoryDetailsState = initialState, action: CategoryDetailsActions): ICategoryDetailsState => {
+const categoryDetailsReducer = (
+  state: IProductDetailsState = initialState,
+  action: ProductDetailsActions
+): IProductDetailsState => {
   switch (action.type) {
-    case ECategoryDetailsActionTypes.SET_LOAD_PRODUCTS_BY_CATEGORY_ID:
+    case EProductDetailsActionTypes.SET_LOAD_PRODUCT_BY_PRODUCT_ID:
       return {
         ...state,
-        products: action.payload
+        productDetails: action.payload,
       };
-    case ECategoryDetailsActionTypes.SET_LOAD_PRODUCTS_BY_CATEGORY_ID_LOADING:
+    case EProductDetailsActionTypes.SET_LOAD_PRODUCT_BY_PRODUCT_ID_LOADING:
       return {
         ...state,
-        loading: action.payload
+        loading: action.payload,
       };
     default:
       return state;
   }
-}
+};
 
 export default categoryDetailsReducer;

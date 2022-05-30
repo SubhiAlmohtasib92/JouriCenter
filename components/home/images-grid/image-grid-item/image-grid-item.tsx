@@ -18,8 +18,6 @@ interface IProps {
 }
 
 const ImageGridItem = (props: IProps) => {
-
-
   const RenderPrice = () => {
     if (props.itemData.productOnSale) {
       return (
@@ -59,20 +57,25 @@ const ImageGridItem = (props: IProps) => {
       if (itemData.productStockQuantity <= itemData.productLowStockAmount) {
         return '#ff6f00';
       } else {
-        return Colors.primaryColor
+        return Colors.primaryColor;
       }
     }
   };
 
   return (
     <TouchableOpacity style={styles.container}>
-      <Image source={{ uri: props.itemData.productImages[0].imageURL }} style={styles.image} />
+      <Image
+        source={{ uri: props.itemData.productImages[0].imageURL }}
+        style={styles.image}
+      />
       <Text style={styles.title}>{props.itemData.productName}</Text>
-      <View style={{
-        position: 'absolute',
-        top: 5,
-        right: 5,
-      }}>
+      <View
+        style={{
+          position: 'absolute',
+          top: 5,
+          right: 5,
+        }}
+      >
         <LikeButton
           addToWishList={props.addToWishList}
           productId={props.itemData.productId}
@@ -85,20 +88,28 @@ const ImageGridItem = (props: IProps) => {
           style={[
             styles.status,
             {
-              color: DetermineColor(props.itemData)
+              color: DetermineColor(props.itemData),
             },
           ]}
         >
-          {props.itemData.productStockStatus === 'outofstock' ? 'مباع' : 'متاح بالمخزن'}
+          {props.itemData.productStockStatus === 'outofstock'
+            ? 'مباع'
+            : 'متاح بالمخزن'}
         </Text>
       </View>
 
-      {
-        props.itemData.productOnSale && (
-          <Text style={styles.discount}>-{Math.round(100 - ((parseInt(props.itemData.productSalePrice) * 100) / (parseInt(props.itemData.productRegularPrice))))}%</Text>
-        )
-      }
-    </TouchableOpacity >
+      {props.itemData.productOnSale && (
+        <Text style={styles.discount}>
+          -
+          {Math.round(
+            100 -
+              (parseInt(props.itemData.productSalePrice) * 100) /
+                parseInt(props.itemData.productRegularPrice)
+          )}
+          %
+        </Text>
+      )}
+    </TouchableOpacity>
   );
 };
 

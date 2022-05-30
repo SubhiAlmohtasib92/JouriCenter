@@ -2,11 +2,11 @@ import {
   View,
   Text,
   SafeAreaView,
-  StyleSheet
-  , FlatList,
+  StyleSheet,
+  FlatList,
   Image,
   Dimensions,
-  Pressable
+  Pressable,
 } from 'react-native';
 import { Header } from '../../components/home';
 
@@ -18,33 +18,49 @@ import { IProductCategory } from '../../state/core/core.types';
 import { CategoriesProps } from './categories.types';
 
 const CategoriesScreen = (props: CategoriesProps) => {
-
   const RenderCategory = (categoryItem: IProductCategory) => {
     return (
-      <Pressable style={styles.imageContainer} onPress={(() => {
-        //('pressed');
-        props.navigation.navigate('CategoryDetails', {
-          categoryId: categoryItem.categoryId,
-          categoryName: categoryItem.categoryName
-        });
-      })} >
-        <Image source={{ uri: categoryItem.categoryImage.src }} style={styles.categoryImage} />
-        <Text style={styles.categoryName} >{categoryItem.categoryName}</Text>
-      </Pressable >
+      <Pressable
+        style={styles.imageContainer}
+        onPress={() => {
+          props.navigation.navigate('CategoryDetails', {
+            categoryId: categoryItem.categoryId,
+            categoryName: categoryItem.categoryName,
+          });
+        }}
+      >
+        <Image
+          source={{ uri: categoryItem.categoryImage.src }}
+          style={styles.categoryImage}
+        />
+        <Text style={styles.categoryName}>{categoryItem.categoryName}</Text>
+      </Pressable>
     );
   };
-  console.log('categories screen props', props);
+  // console.log('categories screen props', props);
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Header title='الفئات' />
+        <Header
+          title='الفئات'
+          rightIcon='search-outline'
+          rightIconFunction={() => {
+            console.log('right Icon pressed');
+          }}
+          leftIcon='notifications-outline'
+          leftIconFunction={() => {
+            console.log('left Icon pressed');
+          }}
+        />
         <View style={styles.listContainer}>
-          <View style={{
-            marginTop: 10,
-            marginBottom: 40,
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-          }}>
+          <View
+            style={{
+              marginTop: 10,
+              marginBottom: 40,
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+            }}
+          >
             <FlatList
               numColumns={2}
               horizontal={false}
@@ -57,7 +73,7 @@ const CategoriesScreen = (props: CategoriesProps) => {
         </View>
       </View>
     </SafeAreaView>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
@@ -85,14 +101,13 @@ const styles = StyleSheet.create({
   categoryName: {
     fontFamily: 'regular',
     fontSize: 15,
-    color: Colors.blackColor
+    color: Colors.blackColor,
   },
   categoryImage: {
     height: 220,
     borderRadius: 20,
     width: Dimensions.get('screen').width / 2 - 20,
-  }
+  },
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoriesScreen);

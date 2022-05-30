@@ -1,11 +1,5 @@
 import { useEffect, useLayoutEffect } from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, ScrollView } from 'react-native';
 
 import { Header, Categories, ImagesGrid } from '../../components/home';
 import CarouselCards from '../../components/home/carousel/CarouselCards';
@@ -15,19 +9,28 @@ import { connect } from 'react-redux';
 import { mapDispatchToProps, mapStateToProps } from './home.redux';
 import { HomeProps } from './home.types';
 
-
 const HomeScreen = (props: HomeProps) => {
   useEffect(() => {
     props.doLoadCategories();
     props.doLoadProducts();
-  }, [])
+  }, []);
   // console.log(props.core.loading);
-  console.log('most recent items', props.home.mostRecentProducts);
-  console.log('wish list items', props.core.wishList);
+  // console.log('most recent items', props.home.mostRecentProducts);
+  // console.log('wish list items', props.core.wishList);
   return (
     <SafeAreaView style={styles.homeScreenWrapper}>
       <View>
-        <Header title='جوري سنتر' />
+        <Header
+          title='جوري سنتر'
+          rightIcon='search-outline'
+          rightIconFunction={() => {
+            console.log('right Icon pressed');
+          }}
+          leftIcon='notifications-outline'
+          leftIconFunction={() => {
+            console.log('left Icon pressed');
+          }}
+        />
         <ScrollView
           horizontal={false}
           alwaysBounceVertical={false}
@@ -35,7 +38,10 @@ const HomeScreen = (props: HomeProps) => {
           showsVerticalScrollIndicator={false}
         >
           <CarouselCards data={props.home.carouselImages} />
-          <Categories categories={props.core.categoriesList} navigation={props.navigation} />
+          <Categories
+            categories={props.core.categoriesList}
+            navigation={props.navigation}
+          />
           <ImagesGrid
             data={props.home.mostRecentProducts}
             addToWishList={props.doAddToWhishList}
@@ -46,7 +52,6 @@ const HomeScreen = (props: HomeProps) => {
     </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   homeScreenWrapper: {
@@ -61,7 +66,5 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.whiteColor,
   },
 });
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

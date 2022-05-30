@@ -53,7 +53,7 @@ const setLoading = (payload: boolean): ISetLoading => {
 };
 
 export const setProducts = (productList: IProduct[]): ISetLoadProducts => {
-  console.log('aaa');
+ // console.log('aaa');
   return {
     type: EHomeActionTypes.SET_LOAD_PRODUCTS,
     payload: productList,
@@ -61,7 +61,7 @@ export const setProducts = (productList: IProduct[]): ISetLoadProducts => {
 };
 
 export const setMostRecent = (productList: IProduct[]): ISetMostRecentProducts => {
-  console.log('sliced items', productList);
+//console.log('sliced items', productList);
   return {
     type: EHomeActionTypes.SET_MOST_RECENT_PRODUCTS,
     payload: productList,
@@ -116,7 +116,7 @@ const loadProducts = () => {
             });
           }
         });
-      console.log('agere0');
+      //console.log('agere0');
       await dispatch(setProducts(productsList));
       await dispatch(setMostRecent(productsList.sort((a, b) => Date.parse(b.productDateCreated) - Date.parse(a.productDateCreated)).slice(0, 4)))
       return productsList || [];
