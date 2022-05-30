@@ -10,6 +10,7 @@ var base64 = require("base-64"); // install it before use from npm i base-64
 export enum ECoreActionTypes {
   SET_CATEGORIES = 'SET_CATEGORIES',
   SET_WHISH_LIST = 'SET_WHISH_LIST',
+  REMOVE_FROM_WISH_LIST = ' REMOVE_FROM_WISH_LIST',
   SET_LOADING = 'SET_LOADING',
   SET_CART_ITEMS = 'SET_CART_ITEMS'
 }
@@ -22,7 +23,7 @@ interface ISetCategories {
 
 interface ISetWhishList {
   type: ECoreActionTypes.SET_WHISH_LIST;
-  payload: number[];
+  payload: number;
 }
 
 interface ISetLoading {
@@ -32,14 +33,20 @@ interface ISetLoading {
 
 interface ISetCartItems {
   type: ECoreActionTypes.SET_CART_ITEMS;
-  payload: number[];
+  payload: number;
+}
+
+interface IRemoveFromWhishList {
+  type: ECoreActionTypes.REMOVE_FROM_WISH_LIST;
+  payload: number;
 }
 
 export type CoreActions =
   ISetCategories |
   ISetWhishList |
   ISetCartItems |
-  ISetLoading
+  ISetLoading |
+  IRemoveFromWhishList
   ;
 
 // Utility Area if any
@@ -59,9 +66,30 @@ const setLoading = (payload: boolean): ISetLoading => {
   };
 };
 
+const setAddItemToCart = (productId: number): ISetCartItems => {
+  return {
+    type: ECoreActionTypes.SET_CART_ITEMS,
+    payload: productId
+  };
+}
+
+const setAddToWhishList = (productId: number): ISetWhishList => {
+  return {
+    type: ECoreActionTypes.SET_WHISH_LIST,
+    payload: productId
+  };
+}
+
+const removeItemFromWhishList = (productId: number): IRemoveFromWhishList => {
+  return {
+    type: ECoreActionTypes.REMOVE_FROM_WISH_LIST,
+    payload: productId
+  };
+}
+
 
 // Thunk Async Action Creators
-export const loadCategories = () => {
+const loadCategories = () => {
   return async (dispatch) => {
     dispatch(setLoading(true));
     try {
@@ -98,10 +126,52 @@ export const loadCategories = () => {
   };
 };
 
+const addItemToCart = (productId: number) => {
+  return async (dispatch) => {
+    dispatch(setLoading(true));
+    try {
+      dispatch(setAddItemToCart(productId));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+};
+
+const addToWhishList = (productId: number) => {
+  return async (dispatch) => {
+    dispatch(setLoading(true));
+    try {
+      dispatch(setAddToWhishList(productId));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+};
+
+const removeItemFromWishList = (productId: number) => {
+  return async (dispatch) => {
+    dispatch(setLoading(true));
+    try {
+      dispatch(removeItemFromWhishList(productId));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+};
+
 /**
  * Grouped collection of core actions creators, thunk async action creators and others.
  * Organized for import as default.
  */
 export default {
-  loadCategories
+  loadCategories,
+  addItemToCart,
+  addToWhishList,
+  removeItemFromWishList
 };

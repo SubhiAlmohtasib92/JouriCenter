@@ -6,11 +6,13 @@ interface IProps {
   itemData: IProductCategory;
   navigation: any;
 }
+
 const CategoryItem = (props: IProps) => {
   return (
     <Pressable style={styles.container} onPress={(() => {
-      props.navigation.navigate('Categories', {
-        categoryId: props.itemData.categoryId
+      props.navigation.navigate('CategoryDetails', {
+        categoryId: props.itemData.categoryId,
+        categoryName: props.itemData.categoryName
       })
     })}>
       <View style={styles.imageContainer}>

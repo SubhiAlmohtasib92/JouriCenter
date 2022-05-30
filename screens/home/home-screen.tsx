@@ -19,9 +19,11 @@ import { HomeProps } from './home.types';
 const HomeScreen = (props: HomeProps) => {
   useEffect(() => {
     props.doLoadCategories();
+    props.doLoadProducts();
   }, [])
-  console.log(props.core.loading);
-  console.log('my final car', props.home.carouselImages);
+  // console.log(props.core.loading);
+  console.log('most recent items', props.home.mostRecentProducts);
+  console.log('wish list items', props.core.wishList);
   return (
     <SafeAreaView style={styles.homeScreenWrapper}>
       <View>
@@ -34,7 +36,11 @@ const HomeScreen = (props: HomeProps) => {
         >
           <CarouselCards data={props.home.carouselImages} />
           <Categories categories={props.core.categoriesList} navigation={props.navigation} />
-          <ImagesGrid />
+          <ImagesGrid
+            data={props.home.mostRecentProducts}
+            addToWishList={props.doAddToWhishList}
+            removeFromWishList={props.doRemoveItemFromWishList}
+          />
         </ScrollView>
       </View>
     </SafeAreaView>

@@ -1,6 +1,5 @@
-
-import { RootState } from '../../state';
-import { IDispatchProps, IStateProps } from './categories.types';
+import { RootState } from '../state';
+import { IDispatchProps, IStateProps } from './routes.types';
 
 
 export const mapDispatchToProps = (dispatch): IDispatchProps => ({

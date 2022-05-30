@@ -41,11 +41,14 @@ export interface IProduct {
   productRegularPrice: string;
   productSalePrice: string;
   productShortDescription: string;
+  productStockStatus: string;
+  productStockQuantity: number;
+  productLowStockAmount: number;
 }
 
 export interface ICoreState {
   categoriesList: IProductCategory[];
-  whishList: number[];// saves product Id.
+  wishList: number[];// saves product Id.
   cart: number[];// saves product Id.
   loading: boolean;
 }

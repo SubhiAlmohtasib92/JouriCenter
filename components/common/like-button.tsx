@@ -10,7 +10,12 @@ import { Pressable, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors } from '../../theme';
 
-const LikeButton = () => {
+interface IProps {
+  addToWishList: (productId: number) => (dispatch: any) => Promise<void>;
+  productId: number;
+  removeFromWishList: (productId: number) => (dispatch: any) => Promise<void>;
+}
+const LikeButton = (props: IProps) => {
   const liked = useSharedValue(0);
 
   const outlineStyle = useAnimatedStyle(() => {
@@ -35,7 +40,14 @@ const LikeButton = () => {
   });
 
   return (
-    <Pressable onPress={() => (liked.value = withSpring(liked.value ? 0 : 1))}>
+    <Pressable onPress={() => {
+      liked.value = withSpring(liked.value ? 0 : 1);
+      if (!liked.value) {
+        props.addToWishList(props.productId)
+      } else {
+        props.removeFromWishList(props.productId)
+      }
+    }}>
       <Animated.View style={[StyleSheet.absoluteFillObject, outlineStyle]}>
         <MaterialCommunityIcons
           name={"heart-outline"}

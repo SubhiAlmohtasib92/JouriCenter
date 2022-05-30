@@ -1,4 +1,3 @@
-import { ImageGridItem as ImageGridItemInterface } from '../images-grid';
 import {
   View,
   Text,
@@ -9,17 +8,20 @@ import {
 } from 'react-native';
 import { Colors } from '../../../../theme';
 import { LikeButton } from '../../../common';
+import { IProduct } from '../../../../state/core/core.types';
 
 interface IProps {
-  data: ImageGridItemInterface;
+  itemData: IProduct;
   index: number;
+  addToWishList: (productId: number) => (dispatch: any) => Promise<void>;
+  removeFromWishList: (productId: number) => (dispatch: any) => Promise<void>;
 }
 
 const ImageGridItem = (props: IProps) => {
 
 
   const RenderPrice = () => {
-    if (props.data.discount > 0) {
+    if (props.itemData.productOnSale) {
       return (
         <>
           <Text
@@ -32,7 +34,7 @@ const ImageGridItem = (props: IProps) => {
               fontFamily: 'regular',
             }}
           >
-            {props.data.price}₪
+            {props.itemData.productSalePrice}₪
           </Text>
           <Text
             style={{
@@ -41,46 +43,62 @@ const ImageGridItem = (props: IProps) => {
               fontFamily: 'regular',
             }}
           >
-            {props.data.price - props.data.price * (props.data.discount / 100)}₪
+            {props.itemData.productRegularPrice}₪
           </Text>
         </>
       );
     } else {
-      return <Text>{props.data.price}₪</Text>;
+      return <Text>{props.itemData.productPrice}₪</Text>;
     }
   };
+
+  const DetermineColor = (itemData: IProduct) => {
+    if (props.itemData.productStockStatus === 'outofstock') {
+      return 'red';
+    } else if (props.itemData.productStockStatus === 'instock') {
+      if (itemData.productStockQuantity <= itemData.productLowStockAmount) {
+        return '#ff6f00';
+      } else {
+        return Colors.primaryColor
+      }
+    }
+  };
+
   return (
     <TouchableOpacity style={styles.container}>
-      <Image source={{ uri: props.data.imgUrl }} style={styles.image} />
-      <Text style={styles.title}>{props.data.title}</Text>
+      <Image source={{ uri: props.itemData.productImages[0].imageURL }} style={styles.image} />
+      <Text style={styles.title}>{props.itemData.productName}</Text>
       <View style={{
         position: 'absolute',
         top: 5,
         right: 5,
-      }}><LikeButton /></View>
+      }}>
+        <LikeButton
+          addToWishList={props.addToWishList}
+          productId={props.itemData.productId}
+          removeFromWishList={props.removeFromWishList}
+        />
+      </View>
       <View style={styles.subInfo}>
         {RenderPrice()}
         <Text
           style={[
             styles.status,
             {
-              color:
-                props.data.status === 'مباع'
-                  ? 'red'
-                  : props.data.status === 'متاح في المخزن'
-                    ? Colors.primaryColor
-                    : '#ff6f00',
+              color: DetermineColor(props.itemData)
             },
           ]}
         >
-          {props.data.status}
+          {props.itemData.productStockStatus === 'outofstock' ? 'مباع' : 'متاح بالمخزن'}
         </Text>
       </View>
 
-      {props.data.discount > 0 && (
-        <Text style={styles.discount}>-{props.data.discount}%</Text>
-      )}
-    </TouchableOpacity>
+      {
+        props.itemData.productOnSale && (
+          <Text style={styles.discount}>-{Math.round(100 - ((parseInt(props.itemData.productSalePrice) * 100) / (parseInt(props.itemData.productRegularPrice))))}%</Text>
+        )
+      }
+    </TouchableOpacity >
   );
 };
 

@@ -6,14 +6,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-
 import { Colors } from '../theme';
 import { HomeScreen, CategoriesScreen } from '../screens';
 import store from '../state';
-//import categoryProducts from '../screens/category-products';
+import categoryDetails from '../screens/category-details/category-details';
+import { mapDispatchToProps, mapStateToProps } from './routes.reducer';
+import { connect } from 'react-redux';
+import { RoutesProps } from './routes.types';
 
 const Tab = createBottomTabNavigator();
 const CategoriesStack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator();
 
 function SettingsScreen() {
   return (
@@ -29,16 +32,33 @@ function SettingsScreen() {
 
 const CategoriesStackScreen = () => {
   return (
-    <CategoriesStack.Navigator screenOptions={{
-      headerShown: false
-    }}>
+    <CategoriesStack.Navigator
+      screenOptions={{
+        headerShown: false,
+
+      }}  >
       <CategoriesStack.Screen name="Categories" component={CategoriesScreen} />
-      <CategoriesStack.Screen name="CategoryDetails" component={SettingsScreen} />
+      <CategoriesStack.Screen name="CategoryDetails" component={categoryDetails} />
     </CategoriesStack.Navigator>
   )
 }
 
-const Routes = () => {
+const HomeStackScreen = () => {
+  return (
+    <HomeStack.Navigator
+      initialRouteName='Home'
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="CategoryDetails" component={categoryDetails} />
+    </HomeStack.Navigator>
+  )
+}
+
+
+const Routes = (props: RoutesProps) => {
+  console.log('from routes,', store.getState().core.wishList);
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -69,10 +89,10 @@ const Routes = () => {
           }}
         />
         <Tab.Screen
-          name='WhishList'
+          name='WishList'
           component={SettingsScreen}
           options={{
-            ...(store.getState().core.whishList.length > 0 && { tabBarBadge: store.getState().core.whishList.length }),
+            ...(store.getState().core.wishList.length > 0 && { tabBarBadge: store.getState().core.wishList.length }),
             tabBarLabel: 'قائمة الامنيات',
             tabBarIcon: ({ focused }) => {
               return (
@@ -122,8 +142,9 @@ const Routes = () => {
         />
         <Tab.Screen
           name='Home'
-          component={HomeScreen}
+          component={HomeStackScreen}
           options={{
+
             tabBarLabel: 'الرئيسية',
             tabBarIcon: ({ focused }) => {
               return (
@@ -142,4 +163,4 @@ const Routes = () => {
   );
 };
 
-export default Routes;
+export default connect(mapStateToProps, mapDispatchToProps)(Routes);

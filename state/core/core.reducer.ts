@@ -6,7 +6,7 @@ import { ICoreState } from './core.types';
 const initialState: ICoreState = {
   categoriesList: [],
   cart: [],
-  whishList: [],
+  wishList: [],
   loading: true
 };
 
@@ -18,12 +18,20 @@ const reducer = (state: ICoreState = initialState, action: CoreActions): ICoreSt
         categoriesList: action.payload
       };
     case ECoreActionTypes.SET_CART_ITEMS:
+      const currentCartItems = state.cart;
+      currentCartItems.push(action.payload);
       return {
-        ...state, cart: action.payload
+        ...state, cart: currentCartItems
       };
     case ECoreActionTypes.SET_WHISH_LIST:
+      const currentWishListItems = state.wishList;
+      currentWishListItems.push(action.payload);
       return {
-        ...state, whishList: action.payload
+        ...state, wishList: currentWishListItems
+      };
+    case ECoreActionTypes.REMOVE_FROM_WISH_LIST:
+      return {
+        ...state, wishList: state.wishList.filter(productId => productId !== action.payload)
       };
     case ECoreActionTypes.SET_LOADING:
       return {

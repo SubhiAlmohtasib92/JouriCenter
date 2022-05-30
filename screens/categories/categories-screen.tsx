@@ -22,9 +22,9 @@ const CategoriesScreen = (props: CategoriesProps) => {
   const RenderCategory = (categoryItem: IProductCategory) => {
     return (
       <Pressable style={styles.imageContainer} onPress={(() => {
-        console.log('pressed');
+        //('pressed');
         props.navigation.navigate('CategoryDetails', {
-          categoryID: categoryItem.categoryId,
+          categoryId: categoryItem.categoryId,
           categoryName: categoryItem.categoryName
         });
       })} >

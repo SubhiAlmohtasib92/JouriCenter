@@ -7,15 +7,19 @@ import coreReducer from './core/core.reducer';
 
 import { IHomeState } from './home/home.types';
 import homeReducer from './home/home.reducer';
+import { ICategoryDetailsState } from './product-details/product-details.types';
+import categoryDetailsReducer from './product-details/product-details.reducer';
 
 export interface RootState {
   core: ICoreState;
   home: IHomeState;
+  categoryDetails: ICategoryDetailsState
 }
 
 const rootReducer = {
   core: coreReducer,
-  home: homeReducer
+  home: homeReducer,
+  categoryDetails: categoryDetailsReducer
 };
 
 export default createStore(combineReducers<RootState>(rootReducer), applyMiddleware(thunk))

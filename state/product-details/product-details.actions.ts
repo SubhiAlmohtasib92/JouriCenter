@@ -3,82 +3,52 @@ import { IProduct } from '../core/core.types';
 
 var base64 = require("base-64"); // install it before use from npm i base-64
 
-export enum EHomeActionTypes {
-  SET_CAROUSEL_IMAGES = ' [HOME_SCREEN] SET_CAROUSEL_IMAGES',
-  SET_MOST_RECENT_PRODUCTS = '[HOME_SCREEN] SET_MOST_RECENT_PRODUCTS',
-  SET_FEATURED_PRODUCTS = ' [HOME_SCREEN] SET_FEATURED_PRODUCTS',
-  SET_LOAD_PRODUCTS = ' [HOME_SCREEN] SET_LOAD_PRODUCTS',
-  SET_LOADING = ' [HOME_SCREEN] SET_LOADING'
+export enum ECategoryDetailsActionTypes {
+  SET_LOAD_PRODUCTS_BY_CATEGORY_ID = ' [CATEGORY_DETAILS] SET_LOAD_PRODUCTS_BY_CATEGORY_ID',
+  SET_LOAD_PRODUCTS_BY_CATEGORY_ID_LOADING = '[CATEGORY_DETAILS] SET_LOAD_PRODUCTS_BY_CATEGORY_ID_LOADING',
 }
 
-interface ISetCarouselImages {
-  type: EHomeActionTypes.SET_CAROUSEL_IMAGES;
-  payload: string[];
-}
-
-interface ISetMostRecentProducts {
-  type: EHomeActionTypes.SET_MOST_RECENT_PRODUCTS;
+interface ISetLoadProductsByCategoryID {
+  type: ECategoryDetailsActionTypes.SET_LOAD_PRODUCTS_BY_CATEGORY_ID;
   payload: IProduct[];
 }
 
-interface ISetFeaturedProducts {
-  type: EHomeActionTypes.SET_FEATURED_PRODUCTS;
-  payload: IProduct[];
-}
-
-interface ISetLoadProducts {
-  type: EHomeActionTypes.SET_LOAD_PRODUCTS;
-  payload: IProduct[];
-}
-
-interface ISetLoading {
-  type: EHomeActionTypes.SET_LOADING;
+interface ISetLoadProductsByCategoryIDLoading {
+  type: ECategoryDetailsActionTypes.SET_LOAD_PRODUCTS_BY_CATEGORY_ID_LOADING;
   payload: boolean;
 }
 
-export type HomeActions =
-  ISetCarouselImages |
-  ISetLoading |
-  ISetFeaturedProducts |
-  ISetMostRecentProducts |
-  ISetLoadProducts;
+export type CategoryDetailsActions =
+  ISetLoadProductsByCategoryID |
+  ISetLoadProductsByCategoryIDLoading;
 
 
 // Utility Area
-const setLoading = (payload: boolean): ISetLoading => {
+const setLoading = (payload: boolean): ISetLoadProductsByCategoryIDLoading => {
   return {
-    type: EHomeActionTypes.SET_LOADING,
+    type: ECategoryDetailsActionTypes.SET_LOAD_PRODUCTS_BY_CATEGORY_ID_LOADING,
     payload: payload
   };
 };
 
-export const setProducts = (productList: IProduct[]): ISetLoadProducts => {
-  console.log('aaa');
+export const setProducts = (productList: IProduct[]): ISetLoadProductsByCategoryID => {
   return {
-    type: EHomeActionTypes.SET_LOAD_PRODUCTS,
+    type: ECategoryDetailsActionTypes.SET_LOAD_PRODUCTS_BY_CATEGORY_ID,
     payload: productList,
   };
 };
 
-export const setMostRecent = (productList: IProduct[]): ISetMostRecentProducts => {
-  console.log('sliced items', productList);
-  return {
-    type: EHomeActionTypes.SET_MOST_RECENT_PRODUCTS,
-    payload: productList,
-  };
-};
-
-
-const loadProducts = () => {
+const getProductsByCategoryId = (categoryId: number) => {
   return async (dispatch) => {
     dispatch(setLoading(true));
     try {
+      // console.log('inside', categoryId);
       const username = WooCommerceInformation.username;
       const password = WooCommerceInformation.password;
       var credentials = base64.encode(username + ":" + password);
 
       const productsList: IProduct[] = await fetch(
-        `${WooCommerceInformation.websiteURL}wp-json/wc/v3/products`,
+        `${WooCommerceInformation.websiteURL}wp-json/wc/v3/products?category=${categoryId}`,
         {
           method: 'GET',
           headers: { "Authorization": `Basic ${credentials}` }
@@ -108,17 +78,13 @@ const loadProducts = () => {
                     categoryId: category.id,
                     categoryName: category.name,
                   }
-                }),
-                productStockStatus: item.stock_status,
-                productStockQuantity: item.stock_quantity,
-                productLowStockAmount: item.low_stock_amount
+                })
               }
             });
           }
         });
-      console.log('agere0');
+
       await dispatch(setProducts(productsList));
-      await dispatch(setMostRecent(productsList.sort((a, b) => Date.parse(b.productDateCreated) - Date.parse(a.productDateCreated)).slice(0, 4)))
       return productsList || [];
     } catch (error) {
       console.error(error);
@@ -129,5 +95,5 @@ const loadProducts = () => {
 }
 
 export default {
-  loadProducts,
+  getProductsByCategoryId
 }
